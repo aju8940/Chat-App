@@ -3,14 +3,13 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 
-// JWT TOKEN 
+// JWT TOKEN
 const createToken = (_id) => {
   const jwtkey = process.env.JWT_SECRET_KEY;
   return jwt.sign({ _id }, jwtkey, { expiresIn: "3d" });
 };
 
-
-// REGISTER USER 
+// REGISTER USER
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -42,8 +41,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-
-// LOGIN USER 
+// LOGIN USER
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -72,8 +70,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-
-// GET USERS 
+// GET USERS
 const getUsers = async (req, res) => {
   try {
     let users = await userModel.find();
@@ -84,8 +81,22 @@ const getUsers = async (req, res) => {
   }
 };
 
+// FIND USER BY ID
+const findUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await userModel.findOne({ _id: id });
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUsers,
+  findUser,
 };
