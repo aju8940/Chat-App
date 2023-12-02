@@ -1,9 +1,12 @@
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipient";
 import { Stack } from 'react-bootstrap'
 import avatar from '../../assets/avatar.svg'
+import { useContext } from "react";
+import { ChatContext } from "../../context/ChatContext";
 
 const UserChat = ({ chat, user }) => {
     const { recipientUser } = useFetchRecipientUser(chat, user)
+    const { onlineUsers } = useContext(ChatContext)
 
     return (
         <Stack direction="horizontal" gap={3} className="user-card align-items-center p-2 justify-content-between"
@@ -22,7 +25,7 @@ const UserChat = ({ chat, user }) => {
                 <div className="this-user-notifications">
                     2
                 </div>
-                <span className="user-online"></span>
+                { onlineUsers.some((onlineUser) => onlineUser.userId === recipientUser?._id) && <span className="user-online"></span> }
             </div>
         </Stack>)
 }
